@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SmsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,3 +29,5 @@ Route::get('/deleteAccount',[UserController::class,'deleteAccount']);
 Route::put('/edit',[UserController::class,'edit']);
 Route::put('/editOwn',[UserController::class,'editOwn']);
 Route::post('/users',[UserController::class,'addUser']);
+Route::get('/sms', [SmsController::class, 'index']);
+Route::get('/smsFilter', [SmsController::class, 'filter']);
