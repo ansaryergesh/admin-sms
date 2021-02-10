@@ -14,7 +14,7 @@ class SmsController extends Controller
         $user = User::where('remember_token', $token)->first();
 
         $sms = DB::table('sms')
-            ->select('sms.text','sms.status', 'sms.type','sms.phone')->paginate(15);
+            ->select('sms.text','sms.status', 'sms.type','sms.phone', 'sms.created_at')->orderBy('created_at', 'desc')->paginate(15);
 
         if($token && $user) {
             return response()->json($sms);
@@ -34,7 +34,7 @@ class SmsController extends Controller
         if($phone && $token && $user) {
             if(!$date_from) {
                 $sms = DB::table('sms')
-                    ->select('text', 'status', 'type', 'phone', 'created_at')->where('phone', $phone)->paginate(15);
+                    ->select('text', 'status', 'type', 'phone', 'created_at')->where('phone', $phone)->orderBy('created_at', 'desc')->paginate(15);
                 return response()->json($sms);
             }
         }
@@ -47,13 +47,37 @@ class SmsController extends Controller
                 $start = date($date_from);
                 $end = date($date_to);
                 $sms = DB::table('sms')
-                    ->select('text', 'status', 'type', 'phone', 'created_at')->whereBetween('created_at', [$start, $end])->paginate(15);
+                    ->select('text', 'status', 'type', 'phone', 'created_at')->whereBetween('created_at', [$start, $end])->orderBy('created_at', 'desc')->paginate(15);
+                return response()->json($sms);  
+            }
+        }
+
+        if($date_to && $token && $user) {
+            if(!$phone){
+                if(!$date_from) {
+                    $date_from = '2000-01-01';
+                }
+                $start = date($date_from);
+                $end = date($date_to);
+                $sms = DB::table('sms')
+                    ->select('text', 'status', 'type', 'phone', 'created_at')->whereBetween('created_at', [$start, $end])->orderBy('created_at', 'desc')->paginate(15);
                     return response()->json($sms);  
             }
         }
         if($phone && $token && $user && $date_from) {
             if(!$date_to) {
                 $date_to = Carbon::now();
+            }
+            $start = date($date_from);
+            $end = date($date_to);
+            $sms = DB::table('sms')
+                ->select('text', 'status', 'type', 'phone', 'created_at')->whereBetween('created_at', [$start, $end])->where('phone', $phone)->paginate(15);
+            return response()->json($sms);   
+        }
+
+        if($phone && $token && $user && $date_to) {
+            if(!$date_from) {
+                $date_from = '2000-01-01';
             }
             $start = date($date_from);
             $end = date($date_to);
