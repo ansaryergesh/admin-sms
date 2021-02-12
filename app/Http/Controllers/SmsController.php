@@ -25,6 +25,16 @@ class SmsController extends Controller
         return response()->json($result);
     }
 
+    public function getSmsTypes(Request $request) {
+        $sms_types = DB::table('sms_types')->get();
+        return response()->json($sms_types);
+    }
+
+    public function getSmsStatuses(Request $request) {
+        $sms_types = DB::table('sms_statuses')->get();
+        return response()->json($sms_types);
+    }
+
     public function indexFile(Request $request){
         $token = $request->input('token');
         $user = User::where('remember_token', $token)->first();
@@ -106,88 +116,12 @@ class SmsController extends Controller
             return response()->json($data);
         }
 
-
         $result['success'] = false;
         $result['message'] = 'Не передан токен или пользователь не найден';
         
         return response()->json($result);
 
     }
-
-    // public function indexFile(Request $request) {
-    //     $token = $request->input('token');
-    //     $user = User::where('remember_token', $token)->first();
-    //     $phone = $request->input('phone');
-    //     $date_from = $request->input('date_from');
-    //     $date_to = $request->input('date_to');
-        
-    //     if(!$phone && !$date_from && !$date_to) {
-    //         $sms = DB::table('sms')
-    //         ->select('sms.text','sms.status', 'sms.type','sms.phone', 'sms.created_at')->orderBy('created_at', 'desc')->get();
-    //     }
-    //     if($phone) {
-    //         if(!$date_from) {
-    //             $sms = DB::table('sms')
-    //                 ->select('text', 'status', 'type', 'phone', 'created_at')->where('phone', $phone)->orderBy('created_at', 'desc')->get();
-    //             return response()->json($sms);
-    //         }
-    //     }
-
-    //     if($date_from) {
-    //         if(!$phone){
-    //             if(!$date_to) {
-    //                 $date_to = Carbon::now();
-    //             }
-    //             $start = date($date_from);
-    //             $end = date($date_to);
-    //             $sms = DB::table('sms')
-    //                 ->select('text', 'status', 'type', 'phone', 'created_at')->whereBetween('created_at', [$start, $end])->orderBy('created_at', 'desc')->get();
-    //             return response()->json($sms);  
-    //         }
-    //     }
-
-    //     if($date_to) {
-    //         if(!$phone){
-    //             if(!$date_from) {
-    //                 $date_from = '2000-01-01';
-    //             }
-    //             $start = date($date_from);
-    //             $end = date($date_to);
-    //             $sms = DB::table('sms')
-    //                 ->select('text', 'status', 'type', 'phone', 'created_at')->whereBetween('created_at', [$start, $end])->orderBy('created_at', 'desc')->get();
-    //                 return response()->json($sms);  
-    //         }
-    //     }
-    //     if($phone && $date_from) {
-    //         if(!$date_to) {
-    //             $date_to = Carbon::now();
-    //         }
-    //         $start = date($date_from);
-    //         $end = date($date_to);
-    //         $sms = DB::table('sms')
-    //             ->select('text', 'status', 'type', 'phone', 'created_at')->whereBetween('created_at', [$start, $end])->where('phone', $phone)->get();
-    //         return response()->json($sms);   
-    //     }
-
-    //     if($phone && $date_to) {
-    //         if(!$date_from) {
-    //             $date_from = '2000-01-01';
-    //         }
-    //         $start = date($date_from);
-    //         $end = date($date_to);
-    //         $sms = DB::table('sms')
-    //             ->select('text', 'status', 'type', 'phone', 'created_at')->whereBetween('created_at', [$start, $end])->where('phone', $phone)->get();
-    //         return response()->json($sms);   
-    //     }
-       
-
-    //     if($token && $user) {
-    //         return response()->json($sms);
-    //     }
-    //     $result['success'] = false;
-    //     $result['message'] = 'Не передан токен или пользователь не найден';
-    //     return response()->json($result);
-    // }
 
     public function filter(Request $request) {
         $token = $request->input('token');

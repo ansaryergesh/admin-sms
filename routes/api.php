@@ -32,4 +32,5 @@ Route::post('/users',[UserController::class,'addUser']);
 Route::get('/sms', [SmsController::class, 'index']);
 Route::get('/exportSms', [SmsController::class, 'indexFile']);
 Route::get('/smsFilter', [SmsController::class, 'filter']);
-Route::get('/test',[SmsController::class,'testFile']);
+Route::get('/smsTypes', [SmsController::class, 'getSmsTypes']);
+Route::get('/smsStatuses', [SmsController::class, 'getSmsStatuses']);
